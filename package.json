@@ -2,6 +2,7 @@
   "name": "b2c-asset",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://api.notion.com",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",

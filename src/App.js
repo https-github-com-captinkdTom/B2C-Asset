@@ -1,28 +1,68 @@
 import Asset from "./Components/Asset";
 import AssetList from "./Components/AssetList";
-import {useState} from "react";
+import React, { useState, useEffect, useCallback } from 'react';
+
 
 function App() {
     const [assets, setAssets] = useState([]);
 
-    function fetchAssetHandler(){
-        fetch('https://api.notion.com/v1/users/49f3758b-2c29-4670-aec2-0bd2abc95f16', {
-            method:"GET",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                "BEARER_TOKEN": "Bearer secret_J4Urn6B1MuUAirnIudwapb4g5F2XHGyQbctVMXzbriL",
-                "Notion-Version": "2022-02-22"
+    // async function fetchAssetHandler(){
+    //         const response = await fetch('https://swapi.dev/api/films/');
+    //         console.log(response);
+
+            // fetch('/v1/databases/a4b284437363483b9eb51c6b9296b464/query', {
+        //     method:"GET",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "X-Requested-With": "XMLHttpRequest",
+        //         "BEARER_TOKEN": "Bearer secret_J4Urn6B1MuUAirnIudwapb4g5F2XHGyQbctVMXzbriL",
+        //         "Notion-Version": "2022-02-22"
+        //     }
+        // })
+        //     .then(response => {
+        //         return response.json();
+        //     })
+        //     .then((data) => {
+        //         console.log(data)
+        //         setAssets(data.results)
+        //     })
+    // }
+
+    const fetchMoviesHandler = useCallback(async () => {
+
+        try {
+
+            console.log("2");
+            // const response = await fetch('/v1/databases/a4b284437363483b9eb51c6b9296b464/query');
+             const response = await fetch('/v1/databases/a4b284437363483b9eb51c6b9296b464');
+
+            console.log(response);
+            console.log("3");
+
+            if (!response.ok) {
+                throw new Error('Something went wrong!');
             }
-        })
-            .then(response => {
-                return response.json();
-            })
-            .then((data) => {
-                console.log(data)
-                setAssets(data.results)
-            })
-    }
+
+            const data = await response.json();
+
+            const transformedMovies = data.results.map((movieData) => {
+                return {
+                    id: movieData.episode_id,
+                    title: movieData.title,
+                    openingText: movieData.opening_crawl,
+                    releaseDate: movieData.release_date,
+                };
+            });
+        } catch (error) {
+        }
+    }, []);
+
+    useEffect(() => {
+        // fetchMoviesHandler();
+
+        console.log("1");
+        fetchMoviesHandler();
+    }, []);
 
     // const { Client } = require('@notionhq/client');
     //
@@ -36,8 +76,8 @@ function App() {
 
     return (
       <div className="App">
-          <button onClick={fetchAssetHandler}>B2C 장비</button>
-          <AssetList assets={assets} />
+          {/*<button onClick={fetchAssetHandler}>B2C 장비</button>*/}
+          {/*<AssetList assets={assets} />*/}
       </div>
     );
 }
