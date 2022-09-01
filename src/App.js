@@ -29,7 +29,7 @@ function App() {
     // }
 
     const fetchMoviesHandler = useCallback(async () => {
-// 주석 테스트
+        // 주석 테스트
         try {
 
             console.log("2");
